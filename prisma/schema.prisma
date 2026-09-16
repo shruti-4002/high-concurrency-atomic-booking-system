@@ -1,0 +1,97 @@
+// This is your Prisma schema file
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String    @id @default(uuid())
+  name        String
+  email       String    @unique
+  password    String
+  role        Role      @default(USER)
+  
+  bookings    Booking[]
+
+  isSuspended Boolean   @default(false)
+  
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Event {
+  id            String          @id @default(uuid())
+  name          String
+  artist        String
+  city          String
+  venue         String
+  date          DateTime
+  createdAt     DateTime        @default(now())
+  
+  categories    SeatCategory[]
+  bookings      Booking[]
+
+  search_vector Unsupported("tsvector")?
+
+  @@index([search_vector], type: Gin)
+}
+
+model SeatCategory {
+  id        String   @id @default(uuid())
+  type      String   // "VIP", "Gold", "Silver"
+  price     Float    // Concert specific pricing
+
+  eventId   String
+  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  seats     Seat[]
+}
+
+model Seat {
+  id         String       @id @default(uuid())
+  seatNo     String       // "A1", "A2"
+  status     SeatStatus   @default(AVAILABLE)
+
+  categoryId String
+  category   SeatCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  booking    Booking?
+}
+
+model Booking {
+  id        String        @id @default(uuid())
+  pricePaid Float         // Locked price snapshot
+  status    BookingStatus @default(PENDING)
+
+  userId    String
+  user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  seatId    String        @unique
+  seat      Seat          @relation(fields: [seatId], references: [id], onDelete: Cascade)
+
+  eventId   String
+  event     Event         @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime      @default(now())
+}
+
+enum SeatStatus {
+  AVAILABLE
+  BOOKED
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+}
+
+enum Role {
+  USER
+  ADMIN
+}
