@@ -33,7 +33,7 @@ const renderPage = (title, categoryTitle, description, imagePath) => `
 </html>
 `;
 
-// 1. MAIN OVERVIEW DASHBOARD (Clean & Organized Layout)
+
 router.get("/", (req, res) => {
   res.send(`
 <!DOCTYPE html>
@@ -77,7 +77,7 @@ router.get("/", (req, res) => {
         <div class="col-md-6 col-lg-4">
             <div class="card-custom">
                 <div>
-                    <div class="card-title">👑 Admin Control & RBAC</div>
+                    <div class="card-title">👑 Admin Control & RBAC :Role Based</div>
                     <p class="text-secondary small">Bulk seat generation, event creation, and category setup restricted to Admin scope.</p>
                 </div>
                 <a href="/proof/rbac-admin-power" class="btn-view mt-3">Inspect Proof Page →</a>
