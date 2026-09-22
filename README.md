@@ -1,6 +1,6 @@
 # 🎟️ Ticket-Nova Concurrent Booking Engine (Backend)
+# [Live](https://high-concurrency-atomic-booking-system.onrender.com) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [API Docs](https://high-concurrency-atomic-booking-system.onrender.com/api-docs/)
 
-**Duration:** Aug 2025 – Sep 2025  
 
 A high-performance backend booking system designed to handle **concurrent seat reservations at scale**, ensuring data consistency, fairness, and reliability under heavy load.
 
